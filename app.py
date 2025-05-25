@@ -1,7 +1,15 @@
+# -*- coding: utf-8 -*-
+"""
+Evaluación de 'Ana de las Tejas Verdes'
+Autor: Tú 😉
+"""
+
 import streamlit as st
 import random
 
-# --- Datos de las Preguntas ---
+# -------------------------------------------------
+# 1. Banco de preguntas (coherente)
+# -------------------------------------------------
 preguntas_ana = [
     {
         "pregunta": "¿Cómo se llama el personaje principal del libro?",
@@ -135,8 +143,25 @@ preguntas_ana = [
     }
 ]
 
-# --- Configuración de la Sesión ---
-if 'pregunta_actual_idx' not in st.session_state:
+# Comprobación automática de coherencia
+for p in preguntas_ana:
+    assert p["respuesta"] in p["opciones"], f"Incongruencia en: {p['pregunta']}"
+
+# -------------------------------------------------
+# 2. Configuración de la interfaz
+# -------------------------------------------------
+st.set_page_config(page_title="Evaluación Ana de las Tejas Verdes",
+                   page_icon="📚",
+                   initial_sidebar_state="collapsed")
+
+st.title("📚 Evaluación de 'Ana de las Tejas Verdes'")
+st.write("Pon a prueba tu conocimiento sobre el inicio y el final del libro.")
+st.markdown("---")
+
+# -------------------------------------------------
+# 3. Estado de sesión
+# -------------------------------------------------
+if "pregunta_actual_idx" not in st.session_state:
     st.session_state.pregunta_actual_idx = 0
     st.session_state.puntuacion = 0
     st.session_state.evaluacion_terminada = False
@@ -144,6 +169,9 @@ if 'pregunta_actual_idx' not in st.session_state:
     st.session_state.respuestas_correctas_dadas = []
     st.session_state.respuestas_incorrectas_dadas = []
 
+# -------------------------------------------------
+# 4. Funciones auxiliares
+# -------------------------------------------------
 def siguiente_pregunta():
     if st.session_state.pregunta_actual_idx < len(st.session_state.preguntas_mezcladas) - 1:
         st.session_state.pregunta_actual_idx += 1
@@ -157,8 +185,9 @@ def verificar_respuesta(opcion_elegida, respuesta_correcta, pregunta_texto):
         st.session_state.respuestas_correctas_dadas.append(pregunta_texto)
     else:
         st.error(f"Incorrecto. La respuesta correcta era: **{respuesta_correcta}**")
-        st.session_state.respuestas_incorrectas_dadas.append(f"{pregunta_texto} (Tu respuesta: {opcion_elegida}, Correcta: {respuesta_correcta})")
-    
+        st.session_state.respuestas_incorrectas_dadas.append(
+            f"{pregunta_texto} (Tu respuesta: {opcion_elegida}, Correcta: {respuesta_correcta})"
+        )
     siguiente_pregunta()
     st.rerun()
 
@@ -171,59 +200,67 @@ def reiniciar_evaluacion():
     st.session_state.respuestas_incorrectas_dadas = []
     st.rerun()
 
-# --- Interfaz de Usuario con Streamlit ---
-st.set_page_config(page_title="Evaluación Ana de las Tejas Verdes", page_icon="📚")
-
-st.title("📚 Evaluación de 'Ana de las Tejas Verdes'")
-st.markdown("Pon a prueba tu conocimiento sobre el inicio y final del libro.")
-st.markdown("---")
-
+# -------------------------------------------------
+# 5. Lógica principal
+# -------------------------------------------------
 if not st.session_state.evaluacion_terminada:
-    pregunta_actual_data = st.session_state.preguntas_mezcladas[st.session_state.pregunta_actual_idx]
+    pregunta_actual = st.session_state.preguntas_mezcladas[st.session_state.pregunta_actual_idx]
+    st.subheader(f"Pregunta {st.session_state.pregunta_actual_idx + 1} "
+                 f"de {len(st.session_state.preguntas_mezcladas)}")
+    st.write(f"**{pregunta_actual['pregunta']}**")
 
-    st.subheader(f"Pregunta {st.session_state.pregunta_actual_idx + 1} de {len(st.session_state.preguntas_mezcladas)}")
-    st.write(f"**{pregunta_actual_data['pregunta']}**")
+    # Barajar opciones de la pregunta actual
+    opciones_barajadas = random.sample(pregunta_actual["opciones"],
+                                       len(pregunta_actual["opciones"]))
 
-    opciones_mezcladas = random.sample(pregunta_actual_data['opciones'], len(pregunta_actual_data['opciones']))
-
-    for opcion in opciones_mezcladas:
-        if st.button(opcion, key=f"opcion_{opcion}_{st.session_state.pregunta_actual_idx}"):
-            verificar_respuesta(opcion, pregunta_actual_data['respuesta'], pregunta_actual_data['pregunta'])
-
+    for opcion in opciones_barajadas:
+        if st.button(opcion, key=f"{st.session_state.pregunta_actual_idx}_{opcion}"):
+            verificar_respuesta(opcion,
+                                pregunta_actual["respuesta"],
+                                pregunta_actual["pregunta"])
 else:
+    # ---- Resultado final ----
     st.success("¡Evaluación terminada!")
-    st.subheader(f"Tu puntuación final es: {st.session_state.puntuacion} de {len(st.session_state.preguntas_mezcladas)}")
+    total_preguntas = len(st.session_state.preguntas_mezcladas)
+    st.markdown(f"### Puntuación: **{st.session_state.puntuacion} / {total_preguntas}**")
 
-    porcentaje = (st.session_state.puntuacion / len(st.session_state.preguntas_mezcladas)) * 100
-    st.progress(porcentaje / 100)
+    porcentaje = st.session_state.puntuacion / total_preguntas
+    st.progress(porcentaje)
 
-    if porcentaje == 100:
+    if porcentaje == 1:
         st.balloons()
-        st.write("¡Felicidades! ¡Dominas el libro por completo! 🎉")
-    elif porcentaje >= 70:
+        st.write("¡Perfecto! Dominas el libro por completo. 🎉")
+    elif porcentaje >= 0.7:
         st.write("¡Muy bien! Tienes un excelente conocimiento del libro. 👍")
     else:
         st.write("Sigue leyendo y repasando. ¡Puedes hacerlo mejor! 💪")
 
+    # ---- Resumen ----
     st.markdown("---")
-    st.subheader("Resumen de Respuestas:")
+    st.subheader("Resumen de respuestas")
+
     if st.session_state.respuestas_correctas_dadas:
-        st.markdown("**Respuestas Correctas:**")
+        st.markdown("**Correctas:**")
         for r in st.session_state.respuestas_correctas_dadas:
-            st.markdown(f"- {r}")
+            st.write(f"• {r}")
     else:
         st.info("No hubo respuestas correctas en esta sesión.")
 
     if st.session_state.respuestas_incorrectas_dadas:
-        st.markdown("**Respuestas Incorrectas:**")
+        st.markdown("**Incorrectas:**")
         for r in st.session_state.respuestas_incorrectas_dadas:
-            st.markdown(f"- {r}")
+            st.write(f"• {r}")
     else:
         st.info("¡Todas tus respuestas fueron correctas!")
 
     st.markdown("---")
-    if st.button("Reiniciar Evaluación"):
+    if st.button("Reiniciar evaluación"):
         reiniciar_evaluacion()
 
-st.sidebar.markdown("---")
-st.sidebar.info("Esta evaluación se basa en el primer capítulo y un fragmento del final del libro 'Ana de las Tejas Verdes'.")
+# -------------------------------------------------
+# 6. Barra lateral
+# -------------------------------------------------
+st.sidebar.info(
+    "Esta evaluación se basa en el primer capítulo y en un fragmento del final "
+    "del libro 'Ana de las Tejas Verdes'."
+)
