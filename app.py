@@ -145,7 +145,7 @@ else:
     st.progress(porcentaje / 100) # Barra de progreso
 
     if porcentaje == 100:
-        st.balloons()
+        st.balloons() # ¡Esta es la línea que añade el confeti!
         st.write("¡Felicidades! ¡Dominas el libro por completo! 🎉")
     elif porcentaje >= 70:
         st.write("¡Muy bien! Tienes un excelente conocimiento del libro. 👍")
@@ -154,3 +154,23 @@ else:
 
     st.markdown("---")
     st.subheader("Resumen de Respuestas:")
+    if st.session_state.respuestas_correctas_dadas:
+        st.markdown("**Respuestas Correctas:**")
+        for r in st.session_state.respuestas_correctas_dadas:
+            st.markdown(f"- {r}")
+    else:
+        st.info("No hubo respuestas correctas.")
+
+    if st.session_state.respuestas_incorrectas_dadas:
+        st.markdown("**Respuestas Incorrectas:**")
+        for r in st.session_state.respuestas_incorrectas_dadas:
+            st.markdown(f"- {r}")
+    else:
+        st.info("No hubo respuestas incorrectas.")
+
+    st.markdown("---")
+    if st.button("Reiniciar Evaluación"):
+        reiniciar_evaluacion()
+
+st.sidebar.markdown("---")
+st.sidebar.info("Esta evaluación se basa en el primer capítulo y un fragmento del final del libro 'Ana de las Tejas Verdes'.")
