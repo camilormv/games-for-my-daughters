@@ -1,107 +1,115 @@
 # -*- coding: utf-8 -*-
 """
-Evaluación de 'Ana de las Tejas Verdes'
+Evaluación ‘Ana de las Tejas Verdes’ – versión corta
 """
 
 import streamlit as st
 import random
 
-# -------------------------------------------------
-# 1. Banco de preguntas (≤ 5 palabras por opción)
-# -------------------------------------------------
+# ---- 1. Banco de preguntas (≤ 5 palabras) ----
 preguntas_ana = [
     {
-        "pregunta": "¿Cómo se llama el personaje principal del libro?",
+        "pregunta": "¿Cómo se llama la protagonista?",
         "respuesta": "Ana",
         "opciones": ["Marilla", "Diana", "Rachel", "Ana"]
     },
     {
-        "pregunta": "¿Quién es la señora Rachel Lynde?",
-        "respuesta": "Vecina entrometida de Avonlea",
+        "pregunta": "¿Quién es Rachel Lynde?",
+        "respuesta": "Vecina entrometida Avonlea",
         "opciones": [
             "Tía de Ana",
             "Maestra de Avonlea",
-            "Vecina entrometida de Avonlea",
-            "Dueña de Tejas Verdes"
+            "Vecina entrometida Avonlea",
+            "Dueña Tejas Verdes"
         ]
     },
     {
-        "pregunta": "¿Dónde vive la señora Rachel Lynde?",
-        "respuesta": "Cerca del camino real",
+        "pregunta": "¿Dónde vive Rachel Lynde?",
+        "respuesta": "Junto al camino real",
         "opciones": [
             "Granja Cuthbert",
             "Charlottetown",
-            "Cerca del camino real",
-            "Bosque junto al arroyo"
+            "Junto al camino real",
+            "Bosque del arroyo"
         ]
     },
     {
-        "pregunta": "¿Cómo se describe el arroyo al pasar por la puerta de la señora Rachel Lynde?",
-        "respuesta": "Corriente tranquila y educada",
+        "pregunta": "¿Cómo es el arroyo allí?",
+        "respuesta": "Tranquilo y educado",
         "opciones": [
-            "Arroyo torrencial intrincado",
-            "Río caudaloso ruidoso",
-            "Corriente tranquila y educada",
-            "Estanque estancado oscuro"
+            "Torrencial intrincado",
+            "Ruidoso caudaloso",
+            "Tranquilo y educado",
+            "Estanque oscuro"
         ]
     },
     {
-        "pregunta": "¿Por qué el arroyo era 'respetuoso' al pasar junto a la casa?",
-        "respuesta": "Rachel lo observaba siempre",
+        "pregunta": "¿Por qué el arroyo es respetuoso?",
+        "respuesta": "Rachel lo vigila",
         "opciones": [
-            "Muy profundo peligroso",
-            "Rachel lo observaba siempre",
-            "Había mucha agua",
-            "Muy limpio claro"
+            "Muy profundo",
+            "Rachel lo vigila",
+            "Mucha agua",
+            "Muy limpio"
         ]
     },
     {
-        "pregunta": "¿Qué labores comunitarias dirigía Rachel Lynde?",
-        "respuesta": "Círculo y escuela dominical",
+        "pregunta": "¿Qué dirige Rachel Lynde?",
+        "respuesta": "Círculo y dominical",
         "opciones": [
-            "Club de lectura",
-            "Círculo y escuela dominical",
-            "Comité del pueblo",
+            "Club lectura",
+            "Círculo y dominical",
+            "Comité pueblo",
             "Feria anual"
         ]
     },
     {
-        "pregunta": "¿Qué rasgo muestra Rachel sobre asuntos ajenos?",
+        "pregunta": "Rasgo de Rachel con chismes:",
         "respuesta": "Vigila propios y ajenos",
         "opciones": [
-            "Solo sus asuntos",
+            "Solo propios",
             "Vigila propios y ajenos",
-            "No le importan otros",
+            "No le importan",
             "Muy discreta"
         ]
     },
     {
-        "pregunta": "¿Con quién se encuentra Ana al final?",
+        "pregunta": "¿Con quién se encuentra Ana?",
         "respuesta": "Gilbert Blythe",
-        "opciones": ["Diana Barry", "Marilla Cuthbert", "Gilbert Blythe", "Matthew Cuthbert"]
+        "opciones": [
+            "Diana Barry",
+            "Marilla Cuthbert",
+            "Gilbert Blythe",
+            "Matthew Cuthbert"
+        ]
     },
     {
-        "pregunta": "¿Cuánto tiempo llevaban sin hablar?",
+        "pregunta": "¿Cuánto sin hablarse?",
         "respuesta": "Cinco años",
         "opciones": ["Un año", "Tres años", "Cinco años", "Diez años"]
     },
     {
-        "pregunta": "¿Qué deciden ser Ana y Gilbert?",
+        "pregunta": "¿Qué deciden ser luego?",
         "respuesta": "Buenos amigos",
-        "opciones": ["Novios", "Compañeros de estudio", "Buenos amigos", "Colegas de trabajo"]
-    },
-    {
-        "pregunta": "¿Cómo se siente Ana tras reconciliarse?",
-        "respuesta": "Feliz y en paz",
         "opciones": [
-            "Triste y arrepentida",
-            "Enojada y frustrada",
-            "Feliz y en paz",
-            "Indiferente y aburrida"
+            "Novios",
+            "Compañeros estudio",
+            "Buenos amigos",
+            "Colegas trabajo"
         ]
     },
     {
-        "pregunta": "¿Qué clase de felicidad espera Ana?",
+        "pregunta": "Sentir de Ana tras paz:",
+        "respuesta": "Feliz y en paz",
+        "opciones": [
+            "Triste arrepentida",
+            "Enojada frustrada",
+            "Feliz y en paz",
+            "Indiferente aburrida"
+        ]
+    },
+    {
+        "pregunta": "Felicidad que desea Ana:",
         "respuesta": "Felicidad tranquila",
         "opciones": [
             "Extravagante ruidosa",
@@ -111,27 +119,27 @@ preguntas_ana = [
         ]
     },
     {
-        "pregunta": "¿Qué más ansía Ana para su futuro?",
-        "respuesta": "Trabajo sincero y amistad",
+        "pregunta": "Además desea también:",
+        "respuesta": "Trabajo sincero amistad",
         "opciones": [
-            "Riqueza y fama",
+            "Riqueza fama",
             "Viajes exóticos",
-            "Trabajo sincero y amistad",
-            "Poder y control"
+            "Trabajo sincero amistad",
+            "Poder control"
         ]
     },
     {
-        "pregunta": "¿De qué derecho no renuncia Ana?",
-        "respuesta": "Derecho a la fantasía",
+        "pregunta": "Derecho irrenunciable Ana:",
+        "respuesta": "Derecho a fantasía",
         "opciones": [
-            "Derecho a estudiar",
+            "Derecho estudiar",
             "Derecho personal",
-            "Derecho a la fantasía",
-            "Derecho a opinar"
+            "Derecho a fantasía",
+            "Derecho opinar"
         ]
     },
     {
-        "pregunta": "¿Qué frase incompleta cierra el pasaje?",
+        "pregunta": "Frase final incompleta:",
         "respuesta": "Y siempre estaba...",
         "opciones": [
             "Y nunca cedió.",
@@ -142,105 +150,82 @@ preguntas_ana = [
     }
 ]
 
-# Comprobaciones de coherencia (se pueden quitar en producción)
-def _contar_palabras(txt): return len(txt.split())
+# Comprobación rápida
+limite = 5
 for p in preguntas_ana:
-    assert p["respuesta"] in p["opciones"], f"Respuesta fuera de opciones: {p['pregunta']}"
-    assert _contar_palabras(p["respuesta"]) <= 5, f"Respuesta muy larga: {p['respuesta']}"
+    assert p["respuesta"] in p["opciones"]
+    assert len(p["respuesta"].split()) <= limite
     for op in p["opciones"]:
-        assert _contar_palabras(op) <= 5, f"Opción muy larga: {op}"
+        assert len(op.split()) <= limite
 
-# -------------------------------------------------
-# 2. Configuración básica de Streamlit
-# -------------------------------------------------
-st.set_page_config(page_title="Evaluación Ana de las Tejas Verdes",
-                   page_icon="📚",
-                   initial_sidebar_state="collapsed")
+# ---- 2. Gestión de sesión con versión ----
+VERSION_APP = "v2_corto"
 
-st.title("📚 Evaluación de 'Ana de las Tejas Verdes'")
-st.write("Pon a prueba tu conocimiento sobre el inicio y el final del libro.")
-st.markdown("---")
+if st.session_state.get("version") != VERSION_APP:
+    # limpiar completamente la sesión
+    for k in list(st.session_state.keys()):
+        del st.session_state[k]
+    st.session_state.version = VERSION_APP
 
-# -------------------------------------------------
-# 3. Estado de sesión
-# -------------------------------------------------
 if "idx" not in st.session_state:
     st.session_state.idx = 0
-    st.session_state.puntuacion = 0
-    st.session_state.terminado = False
+    st.session_state.score = 0
+    st.session_state.done = False
     st.session_state.pool = random.sample(preguntas_ana, len(preguntas_ana))
     st.session_state.ok = []
     st.session_state.fail = []
 
-# -------------------------------------------------
-# 4. Funciones auxiliares
-# -------------------------------------------------
+# ---- 3. UI ----
+st.set_page_config(page_title="Ana – Quiz", page_icon="📚", initial_sidebar_state="collapsed")
+st.title("📚 Quiz de 'Ana de las Tejas Verdes'")
+st.write("Responde cada pregunta. ¡Éxitos!")
+st.markdown("---")
+
+# ---- 4. Funciones ----
 def avanzar():
     if st.session_state.idx < len(st.session_state.pool) - 1:
         st.session_state.idx += 1
     else:
-        st.session_state.terminado = True
+        st.session_state.done = True
 
-def responder(opcion, correcta, texto):
-    if opcion == correcta:
-        st.session_state.puntuacion += 1
+def responder(elegida, correcta, texto):
+    if elegida == correcta:
+        st.session_state.score += 1
         st.success("¡Correcto!")
         st.session_state.ok.append(texto)
     else:
         st.error(f"Incorrecto. Era: {correcta}")
-        st.session_state.fail.append(f"{texto} (Elegiste: {opcion})")
+        st.session_state.fail.append(f"{texto} (Elegiste: {elegida})")
     avanzar()
     st.rerun()
 
 def reiniciar():
-    st.session_state.idx = 0
-    st.session_state.puntuacion = 0
-    st.session_state.terminado = False
-    st.session_state.pool = random.sample(preguntas_ana, len(preguntas_ana))
-    st.session_state.ok = []
-    st.session_state.fail = []
+    for k in ["idx", "score", "done", "pool", "ok", "fail"]:
+        del st.session_state[k]
     st.rerun()
 
-# -------------------------------------------------
-# 5. Lógica principal
-# -------------------------------------------------
-if not st.session_state.terminado:
+# ---- 5. Flujo principal ----
+if not st.session_state.done:
     q = st.session_state.pool[st.session_state.idx]
-    st.subheader(f"Pregunta {st.session_state.idx + 1} de {len(st.session_state.pool)}")
+    st.subheader(f"Pregunta {st.session_state.idx + 1}/{len(st.session_state.pool)}")
     st.write(f"**{q['pregunta']}**")
     for op in random.sample(q["opciones"], len(q["opciones"])):
         if st.button(op, key=f"{st.session_state.idx}_{op}"):
             responder(op, q["respuesta"], q["pregunta"])
 else:
     total = len(st.session_state.pool)
-    st.success("¡Evaluación terminada!")
-    st.markdown(f"### Puntuación: **{st.session_state.puntuacion} / {total}**")
-    st.progress(st.session_state.puntuacion / total)
+    st.success("¡Terminaste!")
+    st.write(f"Puntuación: **{st.session_state.score}/{total}**")
+    st.progress(st.session_state.score / total)
 
-    if st.session_state.puntuacion == total:
-        st.balloons()
-        st.write("¡Perfecto! Dominas el libro.")
-    elif st.session_state.puntuacion / total >= 0.7:
-        st.write("¡Muy bien! Conoces bastante el libro.")
-    else:
-        st.write("Sigue leyendo y practicando.")
-
-    st.markdown("---")
-    st.subheader("Respuestas correctas")
+    st.markdown("#### Correctas")
     for r in st.session_state.ok or ["(ninguna)"]:
-        st.write(f"• {r}")
-    st.subheader("Respuestas incorrectas")
+        st.write("•", r)
+    st.markdown("#### Incorrectas")
     for r in st.session_state.fail or ["(ninguna)"]:
-        st.write(f"• {r}")
+        st.write("•", r)
 
-    st.markdown("---")
-    if st.button("Reiniciar evaluación"):
+    if st.button("Reiniciar"):
         reiniciar()
 
-# -------------------------------------------------
-# 6. Barra lateral
-# -------------------------------------------------
-st.sidebar.info(
-    "Esta evaluación se basa en el primer capítulo y en un fragmento del final "
-    "del libro 'Ana de las Tejas Verdes'."
-)
+st.sidebar.info("Contenido: capítulo 1 y final del libro.")
